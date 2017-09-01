@@ -1,0 +1,44 @@
+<header>
+<constant name="FluidityVersion" type="string" value=":" />
+<constant name="CompileTime" type="string" value="Jun 22 2017 01:54:12" />
+<constant name="StartTime" type="string" value="20170801 104642.866+0100" />
+<constant name="HostName" type="string" value="Unknown" />
+<constant name="format" type="string" value="plain_text" />
+<field column="1" name="ElapsedTime" statistic="value"/>
+<field column="2" name="dt" statistic="value"/>
+<field column="3" name="ElapsedWallTime" statistic="value"/>
+<field column="4" name="CoordinateMesh" statistic="nodes"/>
+<field column="5" name="CoordinateMesh" statistic="elements"/>
+<field column="6" name="CoordinateMesh" statistic="surface_elements"/>
+<field column="7" name="RadParticleScalarFluxGroup1" statistic="min" material_phase="Neutron"/>
+<field column="8" name="RadParticleScalarFluxGroup1" statistic="max" material_phase="Neutron"/>
+<field column="9" name="RadParticleScalarFluxGroup1" statistic="l2norm" material_phase="Neutron"/>
+<field column="10" name="RadParticleScalarFluxGroup1" statistic="integral" material_phase="Neutron"/>
+<field column="11" name="RadParticleContinuousScalarFluxGroup1" statistic="min" material_phase="Neutron"/>
+<field column="12" name="RadParticleContinuousScalarFluxGroup1" statistic="max" material_phase="Neutron"/>
+<field column="13" name="RadParticleContinuousScalarFluxGroup1" statistic="l2norm" material_phase="Neutron"/>
+<field column="14" name="RadParticleContinuousScalarFluxGroup1" statistic="integral" material_phase="Neutron"/>
+<field column="15" name="RadParticleScalarSGSComponentGroup1" statistic="min" material_phase="Neutron"/>
+<field column="16" name="RadParticleScalarSGSComponentGroup1" statistic="max" material_phase="Neutron"/>
+<field column="17" name="RadParticleScalarSGSComponentGroup1" statistic="l2norm" material_phase="Neutron"/>
+<field column="18" name="RadParticleScalarSGSComponentGroup1" statistic="integral" material_phase="Neutron"/>
+<field column="19" name="RadParticleScalarSourceGroup1" statistic="min" material_phase="Neutron"/>
+<field column="20" name="RadParticleScalarSourceGroup1" statistic="max" material_phase="Neutron"/>
+<field column="21" name="RadParticleScalarSourceGroup1" statistic="l2norm" material_phase="Neutron"/>
+<field column="22" name="RadParticleScalarSourceGroup1" statistic="integral" material_phase="Neutron"/>
+<field column="23" name="RadParticleCurrentGroup1%magnitude" statistic="min" material_phase="Neutron"/>
+<field column="24" name="RadParticleCurrentGroup1%magnitude" statistic="max" material_phase="Neutron"/>
+<field column="25" name="RadParticleCurrentGroup1%magnitude" statistic="l2norm" material_phase="Neutron"/>
+<field column="26" name="RadParticleCurrentGroup1%1" statistic="min" material_phase="Neutron"/>
+<field column="27" name="RadParticleCurrentGroup1%1" statistic="max" material_phase="Neutron"/>
+<field column="28" name="RadParticleCurrentGroup1%1" statistic="l2norm" material_phase="Neutron"/>
+<field column="29" name="RadParticleCurrentGroup1%1" statistic="integral" material_phase="Neutron"/>
+<field column="30" name="RadParticleCurrentGroup1%2" statistic="min" material_phase="Neutron"/>
+<field column="31" name="RadParticleCurrentGroup1%2" statistic="max" material_phase="Neutron"/>
+<field column="32" name="RadParticleCurrentGroup1%2" statistic="l2norm" material_phase="Neutron"/>
+<field column="33" name="RadParticleCurrentGroup1%2" statistic="integral" material_phase="Neutron"/>
+<field column="34" name="RadParticleCurrentGroup1%3" statistic="min" material_phase="Neutron"/>
+<field column="35" name="RadParticleCurrentGroup1%3" statistic="max" material_phase="Neutron"/>
+<field column="36" name="RadParticleCurrentGroup1%3" statistic="l2norm" material_phase="Neutron"/>
+<field column="37" name="RadParticleCurrentGroup1%3" statistic="integral" material_phase="Neutron"/>
+</header>

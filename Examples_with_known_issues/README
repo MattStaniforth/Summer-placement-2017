@@ -1,0 +1,35 @@
+This folder contains three subdirectories - each containing an example with known issues running, and thus is for the interest of the developers of FETCH2.
+
+All three run using the bugle96 data library, and this needs to be inserted to the folder before running (bugle96 is not contained here).
+
+All three contain the .geo file so that a mesh can be generated locally. The two examples demonstrating a segmentation fault also contain a mesh which I have generated on my machine. The example demonstrating convergence issues on Archer does not contain a mesh, that must be generated locally on your machine - as well as a mesh decomposition.
+
+###############################################################################
+###############################################################################
+###############################################################################
+
+200817_beamline_no_adapt
+
+This example has had convergence issues on Archer. The mesh decomposition did not make any difference to these issues for me - I tried various combinations of finer meshes and coarser meshes decomposed into small numbers and large numbers of regions using fldecomp. 
+
+This example runs on Archer, but never manages to converge, and thus uses up all available wall time without getting anywhere.
+
+###############################################################################
+###############################################################################
+###############################################################################
+
+Beamlinecentimetres_SEGFAULT
+
+This example segfaults - but changing the coarsening method fixes it.
+
+###############################################################################
+###############################################################################
+###############################################################################
+
+Tube_no_adapt_SEGFAULT
+
+As above.
+
+###############################################################################
+###############################################################################
+###############################################################################
