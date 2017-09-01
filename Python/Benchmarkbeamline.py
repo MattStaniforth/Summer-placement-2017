@@ -485,7 +485,6 @@ for i in range(0,len(Surfaces)):
                     Surfacesindexes[i][1] = "-0.0"
                 
         if Surfaces[i][2][1] != Surfaces[i][3][0]:
-	    print Surfaces[i]
             if Surfaces[i][2][1] != Surfaces[i][3][1]:
                 if Surfacesindexes[i][2] != 0:
                     Surfacesindexes[i][2]=-Surfacesindexes[i][2]
