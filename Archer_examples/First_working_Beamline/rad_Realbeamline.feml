@@ -1,0 +1,560 @@
+<?xml version='1.0' encoding='utf-8'?>
+<FETCH_only_radiation_options>
+  <geometry>
+    <dimension>
+      <integer_value rank="0">3</integer_value>
+    </dimension>
+    <mesh name="CoordinateMesh">
+      <from_file file_name="Realbeamline">
+        <format name="gmsh"/>
+        <stat>
+          <include_in_stat/>
+        </stat>
+      </from_file>
+    </mesh>
+    <mesh name="RadParticleMesh">
+      <from_mesh>
+        <mesh name="CoordinateMesh"/>
+        <stat>
+          <exclude_from_stat/>
+        </stat>
+      </from_mesh>
+    </mesh>
+    <mesh name="RadParticleMaterialMesh">
+      <from_mesh>
+        <mesh name="CoordinateMesh"/>
+        <mesh_continuity>
+          <string_value>discontinuous</string_value>
+        </mesh_continuity>
+        <stat>
+          <exclude_from_stat/>
+        </stat>
+      </from_mesh>
+    </mesh>
+    <mesh name="RadParticleMeshCG">
+      <from_mesh>
+        <mesh name="CoordinateMesh"/>
+        <mesh_continuity>
+          <string_value>continuous</string_value>
+        </mesh_continuity>
+        <stat>
+          <exclude_from_stat/>
+        </stat>
+      </from_mesh>
+    </mesh>
+    <mesh name="RadParticleMeshSGS">
+      <from_mesh>
+        <mesh name="CoordinateMesh"/>
+        <mesh_continuity>
+          <string_value>discontinuous</string_value>
+        </mesh_continuity>
+        <stat>
+          <exclude_from_stat/>
+        </stat>
+      </from_mesh>
+    </mesh>
+    <mesh name="OutputMesh">
+      <from_mesh>
+        <mesh name="CoordinateMesh"/>
+        <stat>
+          <exclude_from_stat/>
+        </stat>
+      </from_mesh>
+    </mesh>
+    <quadrature>
+      <degree>
+        <integer_value rank="0">4</integer_value>
+      </degree>
+    </quadrature>
+  </geometry>
+  <io>
+    <dump_format>
+      <string_value>vtk</string_value>
+    </dump_format>
+    <dump_period_in_timesteps>
+      <constant>
+        <integer_value rank="0">1</integer_value>
+      </constant>
+    </dump_period_in_timesteps>
+    <output_mesh name="OutputMesh"/>
+    <stat/>
+  </io>
+  <timestepping>
+    <current_time>
+      <real_value rank="0">0.0</real_value>
+    </current_time>
+    <timestep>
+      <real_value rank="0">1.0</real_value>
+    </timestep>
+    <finish_time>
+      <real_value rank="0">4</real_value>
+    </finish_time>
+  </timestepping>
+  <particle charge="Neutral" name="Neutron">
+    <method name="Deterministic">
+      <equation name="TimeIndependent">
+        <group_iteration>
+          <maximum>
+            <integer_value rank="0">10</integer_value>
+          </maximum>
+        </group_iteration>
+      </equation>
+      <group_set name="All">
+        <number_of_groups>
+          <integer_value rank="0">1</integer_value>
+        </number_of_groups>
+        <angular_discretisation name="RADIANT">
+          <radiant_angular_discretisation name="HAAR_WAVELETS">
+            <angle_order_polar>
+              <integer_value rank="0">1</integer_value>
+            </angle_order_polar>
+            <angle_order_azimuthal>
+              <integer_value rank="0">1</integer_value>
+            </angle_order_azimuthal>
+          </radiant_angular_discretisation>
+          <scatter_order>
+            <integer_value rank="0">0</integer_value>
+          </scatter_order>
+          <store_inverse_of_D_matrix>
+            <disable_internal_storage/>
+          </store_inverse_of_D_matrix>
+          <solver name="Internal">
+            <iterative_method name="FGMRES"/>
+            <preconditioner name="MULTIGRID"/>
+          </solver>
+          <angular_flux_field>
+            <cg_mesh name="RadParticleMeshCG"/>
+            <sgs_mesh name="RadParticleMeshSGS"/>
+            <spatial_discretisation>
+              <subgrid_scale/>
+            </spatial_discretisation>
+            <initial_condition name="WholeMesh">
+              <constant>
+                <real_value rank="0">1</real_value>
+              </constant>
+            </initial_condition>
+            <boundary_conditions name="Vacuum">
+              <surface_ids>
+                <integer_value shape="8" rank="1">73 74 75 76 77 78 89 90</integer_value>
+              </surface_ids>
+              <type name="Vacuum"/>
+            </boundary_conditions>
+            <fixed_source name="Source_cube">
+              <source_strength>
+                <real_value shape="1" rank="1">1e2</real_value>
+              </source_strength>
+              <region_ids>
+                <integer_value shape="1" rank="1">141</integer_value>
+              </region_ids>
+            </fixed_source>
+            <output/>
+            <stat/>
+            <detectors>
+              <include_in_detectors/>
+            </detectors>
+            <steady_state>
+              <include_in_steady_state/>
+            </steady_state>
+            <consistent_interpolation/>
+          </angular_flux_field>
+          <scalar_field name="RadParticleScalarFlux">
+            <diagnostic>
+              <algorithm name="Internal"/>
+              <mesh name="RadParticleMeshFullSGS"/>
+              <output/>
+              <stat/>
+              <galerkin_projection>
+                <discontinuous/>
+              </galerkin_projection>
+            </diagnostic>
+          </scalar_field>
+          <scalar_field name="RadParticleContinuousScalarFlux">
+            <diagnostic>
+              <algorithm name="Internal"/>
+              <mesh name="RadParticleMeshCG"/>
+              <output/>
+              <stat/>
+              <consistent_interpolation/>
+            </diagnostic>
+          </scalar_field>
+          <scalar_field name="RadParticleScalarSGSComponent">
+            <diagnostic>
+              <algorithm name="Internal"/>
+              <mesh name="RadParticleMeshSGS"/>
+              <output/>
+              <stat/>
+              <galerkin_projection>
+                <discontinuous/>
+              </galerkin_projection>
+            </diagnostic>
+          </scalar_field>
+          <vector_field name="RadParticleCurrent">
+            <diagnostic>
+              <algorithm name="Internal"/>
+              <mesh name="RadParticleMeshFullSGS"/>
+              <output/>
+              <stat/>
+              <galerkin_projection>
+                <discontinuous/>
+              </galerkin_projection>
+            </diagnostic>
+          </vector_field>
+          <scalar_field name="RadParticleScalarSource">
+            <diagnostic>
+              <algorithm name="Internal"/>
+              <mesh name="RadParticleMeshFullSGS"/>
+              <output/>
+              <stat/>
+              <galerkin_projection>
+                <discontinuous/>
+              </galerkin_projection>
+            </diagnostic>
+          </scalar_field>
+        </angular_discretisation>
+      </group_set>
+      <output_quantities>
+        <timer_log/>
+        <quantity name="total_average_flux">
+          <quantity_type name="Average_flux">
+            <all_groups/>
+            <all_regions/>
+          </quantity_type>
+        </quantity>
+        <quantity name="beamline_average_flux">
+          <quantity_type name="Average_flux">
+            <all_groups/>
+            <region_ids>
+              <integer_value shape="1" rank="1">140</integer_value>
+            </region_ids>
+          </quantity_type>
+        </quantity>
+        <quantity name="detector_surface_current">
+          <quantity_type name="Surface_current">
+            <all_groups/>
+            <surface_ids>
+              <integer_value shape="1" rank="1">132</integer_value>
+            </surface_ids>
+          </quantity_type>
+        </quantity>
+        <quantity name="outer_shielding_average_flux">
+          <quantity_type name="Average_flux">
+            <all_groups/>
+            <region_ids>
+              <integer_value shape="1" rank="1">137</integer_value>
+            </region_ids>
+          </quantity_type>
+        </quantity>
+        <quantity name="vacuum_average_flux">
+          <quantity_type name="Average_flux">
+            <all_groups/>
+            <region_ids>
+              <integer_value shape="1" rank="1">138</integer_value>
+            </region_ids>
+          </quantity_type>
+        </quantity>
+      </output_quantities>
+      <goal_based_adaptivity name="Adjoint">
+        <adapt_angle/>
+        <goal name="Av_Flux">
+          <goal_type name="Average_flux">
+            <all_groups/>
+            <region_ids>
+              <integer_value shape="1" rank="1">140</integer_value>
+            </region_ids>
+          </goal_type>
+        </goal>
+        <goal_target_errors>
+          <real_value shape="1" rank="1">1e-4</real_value>
+        </goal_target_errors>
+      </goal_based_adaptivity>
+      <angular_adaptivity_options>
+        <max_adaptive_angle_order name="Same_for_all_group_sets">
+          <integer_value rank="0">3</integer_value>
+        </max_adaptive_angle_order>
+      </angular_adaptivity_options>
+      <material_data_set name="library">
+        <from_bugle particle_type="Neutron" file_name="bugle96">
+          <start_group>
+            <integer_value rank="0">47</integer_value>
+          </start_group>
+          <physical_material name="shield">
+            <isotopic_composition name="WeightPercent">
+              <mass_density>
+                <real_value rank="0">7.85</real_value>
+              </mass_density>
+              <isotope mass_number="56" name="Fe56">
+                <real_value rank="0">1</real_value>
+              </isotope>
+            </isotopic_composition>
+          </physical_material>
+          <physical_material name="beamline">
+            <isotopic_composition name="WeightPercent">
+              <mass_density>
+                <real_value rank="0">0</real_value>
+              </mass_density>
+              <isotope mass_number="56" name="Fe56">
+                <real_value rank="0">1</real_value>
+              </isotope>
+            </isotopic_composition>
+          </physical_material>
+        </from_bugle>
+        <convert name="cm_to_metre"/>
+      </material_data_set>
+      <material_mapping>
+        <material_mesh name="RadParticleMaterialMesh"/>
+        <region>
+          <region_ids name="source_region">
+            <integer_value shape="1" rank="1">141</integer_value>
+            <physical_material name="beamline"/>
+          </region_ids>
+          <region_ids name="beamline_region">
+            <integer_value shape="1" rank="1">140</integer_value>
+            <physical_material name="beamline"/>
+          </region_ids>
+          <region_ids name="outer_shielding_region">
+            <integer_value shape="1" rank="1">137</integer_value>
+            <physical_material name="shield"/>
+          </region_ids>
+          <region_ids name="guide_shielding_region">
+            <integer_value shape="1" rank="1">139</integer_value>
+            <physical_material name="shield"/>
+          </region_ids>
+          <region_ids name="vacuum_region">
+            <integer_value shape="1" rank="1">138</integer_value>
+            <physical_material name="beamline"/>
+          </region_ids>
+        </region>
+      </material_mapping>
+    </method>
+  </particle>
+  <particle charge="Neutral" name="Adjoint">
+    <method name="Deterministic">
+      <adjoint>
+        <continuous/>
+        <do_not_solve_last_iteration/>
+        <goal name="Av_flux">
+          <goal_type name="Average_flux">
+            <all_groups/>
+            <region_ids>
+              <integer_value shape="1" rank="1">140</integer_value>
+            </region_ids>
+          </goal_type>
+        </goal>
+      </adjoint>
+      <equation name="TimeIndependent">
+        <group_iteration>
+          <maximum>
+            <integer_value rank="0">10</integer_value>
+          </maximum>
+        </group_iteration>
+      </equation>
+      <group_set name="All">
+        <number_of_groups>
+          <integer_value rank="0">1</integer_value>
+        </number_of_groups>
+        <angular_discretisation name="RADIANT">
+          <radiant_angular_discretisation name="HAAR_WAVELETS">
+            <angle_order_polar>
+              <integer_value rank="0">1</integer_value>
+            </angle_order_polar>
+            <angle_order_azimuthal>
+              <integer_value rank="0">1</integer_value>
+            </angle_order_azimuthal>
+          </radiant_angular_discretisation>
+          <scatter_order>
+            <integer_value rank="0">0</integer_value>
+          </scatter_order>
+          <store_inverse_of_D_matrix>
+            <disable_internal_storage/>
+          </store_inverse_of_D_matrix>
+          <solver name="Internal">
+            <iterative_method name="FGMRES"/>
+            <preconditioner name="MULTIGRID"/>
+          </solver>
+          <angular_flux_field>
+            <cg_mesh name="RadParticleMeshCG"/>
+            <sgs_mesh name="RadParticleMeshSGS"/>
+            <spatial_discretisation>
+              <subgrid_scale/>
+            </spatial_discretisation>
+            <initial_condition name="WholeMesh">
+              <constant>
+                <real_value rank="0">1</real_value>
+              </constant>
+            </initial_condition>
+            <boundary_conditions name="Vacuum">
+              <surface_ids>
+                <integer_value shape="8" rank="1">73 74 75 76 77 78 89 90</integer_value>
+              </surface_ids>
+              <type name="Vacuum"/>
+            </boundary_conditions>
+            <fixed_source name="Source_cube">
+              <source_strength>
+                <real_value shape="1" rank="1">1e2</real_value>
+              </source_strength>
+              <region_ids>
+                <integer_value shape="1" rank="1">141</integer_value>
+              </region_ids>
+            </fixed_source>
+            <output/>
+            <stat/>
+            <detectors>
+              <include_in_detectors/>
+            </detectors>
+            <steady_state>
+              <include_in_steady_state/>
+            </steady_state>
+            <consistent_interpolation/>
+          </angular_flux_field>
+          <scalar_field name="RadParticleScalarFlux">
+            <diagnostic>
+              <algorithm name="Internal"/>
+              <mesh name="RadParticleMeshFullSGS"/>
+              <output/>
+              <stat/>
+              <galerkin_projection>
+                <discontinuous/>
+              </galerkin_projection>
+            </diagnostic>
+          </scalar_field>
+          <scalar_field name="RadParticleContinuousScalarFlux">
+            <diagnostic>
+              <algorithm name="Internal"/>
+              <mesh name="RadParticleMeshCG"/>
+              <output/>
+              <stat/>
+              <consistent_interpolation/>
+            </diagnostic>
+          </scalar_field>
+          <scalar_field name="RadParticleScalarSGSComponent">
+            <diagnostic>
+              <algorithm name="Internal"/>
+              <mesh name="RadParticleMeshSGS"/>
+              <output/>
+              <stat/>
+              <galerkin_projection>
+                <discontinuous/>
+              </galerkin_projection>
+            </diagnostic>
+          </scalar_field>
+          <vector_field name="RadParticleCurrent">
+            <diagnostic>
+              <algorithm name="Internal"/>
+              <mesh name="RadParticleMeshFullSGS"/>
+              <output/>
+              <stat/>
+              <galerkin_projection>
+                <discontinuous/>
+              </galerkin_projection>
+            </diagnostic>
+          </vector_field>
+          <scalar_field name="RadParticleScalarSource">
+            <diagnostic>
+              <algorithm name="Internal"/>
+              <mesh name="RadParticleMeshFullSGS"/>
+              <output/>
+              <stat/>
+              <galerkin_projection>
+                <discontinuous/>
+              </galerkin_projection>
+            </diagnostic>
+          </scalar_field>
+        </angular_discretisation>
+      </group_set>
+      <output_quantities>
+        <timer_log/>
+        <quantity name="total_average_flux">
+          <quantity_type name="Average_flux">
+            <all_groups/>
+            <all_regions/>
+          </quantity_type>
+        </quantity>
+        <quantity name="beamline_average_flux">
+          <quantity_type name="Average_flux">
+            <all_groups/>
+            <region_ids>
+              <integer_value shape="1" rank="1">140</integer_value>
+            </region_ids>
+          </quantity_type>
+        </quantity>
+        <quantity name="detector_surface_current">
+          <quantity_type name="Surface_current">
+            <all_groups/>
+            <surface_ids>
+              <integer_value shape="1" rank="1">132</integer_value>
+            </surface_ids>
+          </quantity_type>
+        </quantity>
+        <quantity name="outer_shielding_average_flux">
+          <quantity_type name="Average_flux">
+            <all_groups/>
+            <region_ids>
+              <integer_value shape="1" rank="1">137</integer_value>
+            </region_ids>
+          </quantity_type>
+        </quantity>
+        <quantity name="vacuum_average_flux">
+          <quantity_type name="Average_flux">
+            <all_groups/>
+            <region_ids>
+              <integer_value shape="1" rank="1">138</integer_value>
+            </region_ids>
+          </quantity_type>
+        </quantity>
+      </output_quantities>
+      <material_data_set name="library">
+        <from_bugle particle_type="Neutron" file_name="bugle96">
+          <start_group>
+            <integer_value rank="0">47</integer_value>
+          </start_group>
+          <physical_material name="shield">
+            <isotopic_composition name="WeightPercent">
+              <mass_density>
+                <real_value rank="0">7.85</real_value>
+              </mass_density>
+              <isotope mass_number="56" name="Fe56">
+                <real_value rank="0">1</real_value>
+              </isotope>
+            </isotopic_composition>
+          </physical_material>
+          <physical_material name="beamline">
+            <isotopic_composition name="WeightPercent">
+              <mass_density>
+                <real_value rank="0">0</real_value>
+              </mass_density>
+              <isotope mass_number="56" name="Fe56">
+                <real_value rank="0">1</real_value>
+              </isotope>
+            </isotopic_composition>
+          </physical_material>
+        </from_bugle>
+        <convert name="cm_to_metre"/>
+      </material_data_set>
+      <material_mapping>
+        <material_mesh name="RadParticleMaterialMesh"/>
+        <region>
+          <region_ids name="source_region">
+            <integer_value shape="1" rank="1">141</integer_value>
+            <physical_material name="beamline"/>
+          </region_ids>
+          <region_ids name="beamline_region">
+            <integer_value shape="1" rank="1">140</integer_value>
+            <physical_material name="beamline"/>
+          </region_ids>
+          <region_ids name="outer_shielding_region">
+            <integer_value shape="1" rank="1">137</integer_value>
+            <physical_material name="shield"/>
+          </region_ids>
+          <region_ids name="guide_shielding_region">
+            <integer_value shape="1" rank="1">139</integer_value>
+            <physical_material name="shield"/>
+          </region_ids>
+          <region_ids name="vacuum_region">
+            <integer_value shape="1" rank="1">138</integer_value>
+            <physical_material name="beamline"/>
+          </region_ids>
+        </region>
+      </material_mapping>
+    </method>
+  </particle>
+</FETCH_only_radiation_options>
